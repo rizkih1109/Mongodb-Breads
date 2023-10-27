@@ -1,19 +1,18 @@
-
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost:3000';
+const url = "mongodb://127.0.0.1:27017";
 const client = new MongoClient(url);
-const dbName = 'datadb';
+const dbName = "datadb";
 
 async function main() {
   await client.connect();
   console.log('Connected successfully to server');
   const db = client.db(dbName);
-  return db
+  return db;
 }
 
 main()
@@ -34,7 +33,7 @@ main()
     app.use(express.static(path.join(__dirname, 'public')));
 
     app.use('/', indexRouter);
-    app.use('/users', usersRouter);
+    app.use('/api/users', usersRouter);
 
     var debug = require('debug')('mongodb-breads:server');
     var http = require('http');
@@ -120,4 +119,6 @@ main()
       debug('Listening on ' + bind);
     }
   })
-  .catch(console.error)
+  .catch((err) => {
+    console.log(err)
+  })
