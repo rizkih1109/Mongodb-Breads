@@ -22,8 +22,8 @@ module.exports = function (db) {
       const total = await User.count(params)
       const pages = Math.ceil(total / limit)
 
-      const users = await User.find(params).toArray();
-      res.json({ data: users, page, total, pages, limit, offset })
+      const users = await User.find(params).limit(parseInt(limit)).skip(offset).toArray();
+      res.json({ data: users, total, pages, page, limit, offset })
 
     } catch (error) {
       res.status(500).json({ error })
@@ -31,11 +31,11 @@ module.exports = function (db) {
   })
 
   router.post('/', async (req, res, next) => {
-    console.log(req.body)
     try {
       const { name, phone } = req.body
       const users = await User.insertOne({ name: name, phone: phone })
-      res.status(201).json(users)
+      const data = await User.find({_id: new ObjectId(users.insertedId)}).toArray()
+      res.status(201).json(data)
     } catch (err) {
       console.log(err)
       res.status(500).json({ err })
@@ -56,7 +56,7 @@ module.exports = function (db) {
     try {
       const id = req.params.id
       const {name, phone} = req.body
-      const user = await User.updateOne({_id: new ObjectId(id)}, {$set: {name: name, phone: phone}})
+      const user = await User.findOneAndUpdate({_id: new ObjectId(id)}, {$set: {name: name, phone: phone}})
       res.status(201).json(user)
     } catch (error) {
       res.status(500).json({error})
@@ -66,7 +66,7 @@ module.exports = function (db) {
   router.delete('/:id', async (req, res, next) => {
     try {
       const id = req.params.id
-      const user = await User.deleteOne({_id: new ObjectId(id)})
+      const user = await User.findOneAndDelete({_id: new ObjectId(id)})
       res.status(201).json(user)
     } catch (error) {
       res.status(500).json({error})
