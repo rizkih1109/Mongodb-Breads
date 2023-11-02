@@ -1,3 +1,7 @@
+table {
+  border: 2px solid #dee2e6;
+  border-top: 0px;
+}
 
 .head {
   margin-top: 10px;
@@ -6,5 +10,5 @@
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
   text-align: center;
-  border: 1px solid #dee2e6;
+  border: 2px solid #dee2e6;
 }
