@@ -16,3 +16,8 @@
   border: 1px solid #dee2e6;
   border-radius: 7px;
 }
+
+.foot2 {
+  display: flex;
+  justify-content: space-between;
+}

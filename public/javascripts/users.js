@@ -1,5 +1,5 @@
-let id = null
-let condition = null
+let id = null, condition = null, page = 1, search = '', limit = 5, sortBy = '_id', sortMode = 'desc';
+
 
 let button = document.getElementById('mybutton')
 button.onclick = () => {
@@ -17,13 +17,26 @@ function getId(_id) {
     id = _id
 }
 
+const browse = () => {
+    const name = document.getElementById('name').value
+    const phone = document.getElementById('phone').value
+    let inputData = document.getElementById('inputData').value
+    search = inputData.toString()
+    readData()
+}
+
+const clear = () => {
+    search = document.getElementById('inputData').value = ''
+    readData()
+}
+
 document.getElementById('form-user').addEventListener('submit', (event) => {
     event.preventDefault()
     addData()
 })
 
 const readData = async () => {
-    const response = await fetch("http://localhost:3000/api/users");
+    const response = await fetch(`http://localhost:3000/api/users?search=${search}`);
     const users = await response.json();
     let html = ''
     users.data.forEach((item, index) => {
@@ -45,6 +58,8 @@ const readData = async () => {
 readData()
 
 const addData = async () => {
+
+    let pagination = ""
     const name = document.getElementById('name').value
     const phone = document.getElementById('phone').value
     const response = await fetch("http://localhost:3000/api/users", {
