@@ -9,20 +9,20 @@ module.exports = function (db) {
 
   router.get('/', async (req, res, next) => {
     try {
-      const { page = 1, limit = 5, search = '', sortMode, sortBy } = req.query
+      const { page = 1, limit = 5, query = '', sortMode = 'desc', sortBy } = req.query
       const params = {}
       const sort = {}
-      sort[sortBy] = sortMode == 'asc' ? 1 : -1
+      sort[sortBy] = sortMode
       const offset = (page - 1) * 5
 
-      if (search) {
-        params['$or'] = [{ "name": new RegExp(search, 'i') }, { "phone": new RegExp(search, "i") }]
+      if (query) {
+        params['$or'] = [{ "name": new RegExp(query, 'i') }, { "phone": new RegExp(query, "i") }]
       }
 
       const total = await User.count(params)
       const pages = Math.ceil(total / limit)
 
-      const users = await User.find(params).limit(parseInt(limit)).skip(offset).toArray();
+      const users = await User.find(params).sort(sort).limit(parseInt(limit)).skip(offset).toArray();
       res.json({ data: users, total, pages, page, limit, offset })
 
     } catch (error) {

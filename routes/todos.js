@@ -10,25 +10,25 @@ module.exports = function (db) {
 
     router.get('/', async (req, res, next) => {
         try {
-            const { page = 1, limit = 10, title, startDate, endDate, complete, executor, sortMode, sortBy } = req.query
+            const { page = 1, limit = 10, title, startdateDeadline, enddateDeadline, complete, sortMode = 'desc', sortBy, executor } = req.query
             const params = {}
             const sort = {}
-            sort[sortBy] = sortMode == 'asc' ? 1 : -1
+            sort[sortBy] = sortMode
             const offset = (page - 1) * 5
 
             if (title) {
                 params['title'] = new RegExp(title, 'i')
             }
 
-            if (startDate && endDate) {
+            if (startdateDeadline && enddateDeadline) {
                 params['deadline'] = {
-                    $gte: startDate,
-                    $lte: endDate
+                    $gte: startdateDeadline,
+                    $lte: enddateDeadline
                 }
-            } else if (startDate) {
-                params['deadline'] = { $gte: startDate }
-            } else if (endDate) {
-                params['deadline'] = { $lte: endDate }
+            } else if (startdateDeadline) {
+                params['deadline'] = { $gte: startdateDeadline }
+            } else if (enddateDeadline) {
+                params['deadline'] = { $lte: enddateDeadline }
             }
 
             if (complete) {
@@ -42,7 +42,7 @@ module.exports = function (db) {
             const total = await Todo.count(params)
             const pages = Math.ceil(total / limit)
 
-            const todos = await Todo.find(params).limit(parseInt(limit)).skip(offset).toArray();
+            const todos = await Todo.find(params).sort(sort).limit(parseInt(limit)).skip(offset).toArray();
             res.json({ data: todos, total, pages, page, limit })
 
         } catch (error) {

@@ -1,5 +1,11 @@
-let id = null, condition = null, page = 1, search = '', limit = 5, sortBy = '_id', sortMode = 'desc';
+// Variables
+let id = null, condition = null, page = 1, query = '', limit = 5, sortBy = '_id', sortMode = 'desc';
 
+
+// Support function
+function getId(_id) {
+    id = _id
+}
 
 let button = document.getElementById('mybutton')
 button.onclick = () => {
@@ -13,20 +19,27 @@ addButton.onclick = () => {
     const phone = document.getElementById('phone').value = ""
 }
 
-function getId(_id) {
-    id = _id
-}
-
 const browse = () => {
     const name = document.getElementById('name').value
     const phone = document.getElementById('phone').value
     let inputData = document.getElementById('inputData').value
-    search = inputData.toString()
+    query = inputData.toString()
     readData()
 }
 
 const clear = () => {
-    search = document.getElementById('inputData').value = ''
+    query = document.getElementById('inputData').value = ''
+    readData()
+}
+
+const chooselimit = () => {
+    limit = document.getElementById('showData').value
+    page = 1
+    readData()
+}
+
+const changePage = async (num) => {
+    page = num
     readData()
 }
 
@@ -35,14 +48,18 @@ document.getElementById('form-user').addEventListener('submit', (event) => {
     addData()
 })
 
+// Main function
 const readData = async () => {
-    const response = await fetch(`http://localhost:3000/api/users?search=${search}`);
+    let pagination = ""
+    let pageNumber = ""
+    const response = await fetch(`http://localhost:3000/api/users?query=${query}&page=${page}&limit=${limit}`);
     const users = await response.json();
     let html = ''
+    const offset = users.offset
     users.data.forEach((item, index) => {
         html += `
         <tr>
-                <th scope="row">${index + 1}</th>
+                <th scope="row">${index + offset + 1}</th>
                 <td>${item.name}</td>
                 <td>${item.phone}</td>
                 <td>
@@ -52,14 +69,32 @@ const readData = async () => {
                 </td>
             </tr>
         `
-    })
+    });
+
+    for (let i = 1; i <= users.pages; i++) {
+        pageNumber += `<a class="page-link ${page == i ? ' active': ''}" id="button-pagination" onclick="changePage(${i})">${i}</a>`
+    }
+
+    if (document.getElementById('showData').value == 0) {
+        pagination = ''
+    } else {
+        pagination += `
+        <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${(users.limit + users.offset) >= users.total ? users.total : (users.limit + users.offset)} of ${users.total} entries </span>
+        <div class="page">
+        ${users.page == 1 ? '' : '<a onclick="changePage(page - 1)" class="page-link" arial-lable="back"><span arial-hidden = true">&laquo</span></a>'}
+        ${pageNumber}
+        ${users.page == users.pages ? '' : '<a onclick="changePage(page + 1)" class="page-link" arial-lable="next"><span arial-hidden = true">&raquo</span></a>'}
+        </div>
+        `
+    }
+
+    document.getElementById('button-pagination').innerHTML = pagination
     document.getElementById('users-table-tbody').innerHTML = html
 }
 readData()
 
 const addData = async () => {
 
-    let pagination = ""
     const name = document.getElementById('name').value
     const phone = document.getElementById('phone').value
     const response = await fetch("http://localhost:3000/api/users", {
