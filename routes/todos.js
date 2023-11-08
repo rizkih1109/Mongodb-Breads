@@ -76,8 +76,7 @@ module.exports = function (db) {
         try {
             const id = req.params.id
             const { title, deadline, complete } = req.body
-            const todo = await Todo.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { title: title, complete: JSON.parse(complete), deadline: deadline } }, { returnOriginal: false })
-            console.log(todo)
+            const todo = await Todo.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { title: title, complete: JSON.parse(complete), deadline: deadline } }, { returnDocument: 'after' })
             res.status(201).json(todo)
         } catch (error) {
             res.status(500).json({ error })

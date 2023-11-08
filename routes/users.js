@@ -56,7 +56,7 @@ module.exports = function (db) {
     try {
       const id = req.params.id
       const {name, phone} = req.body
-      const user = await User.findOneAndUpdate({_id: new ObjectId(id)}, {$set: {name: name, phone: phone}})
+      const user = await User.findOneAndUpdate({_id: new ObjectId(id)}, {$set: {name: name, phone: phone}}, {returnDocument: 'after'})
       res.status(201).json(user)
     } catch (error) {
       res.status(500).json({error})
