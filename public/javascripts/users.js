@@ -22,11 +22,13 @@ addButton.onclick = () => {
 const sortNameAsc = (name) => {
     sortBy = name
     sortMode = 'asc'
+    let random = `<a type="button" onclick="sortPhoneAsc('name')"><i class="fa-solid fa-sort"></i></a> Phone</th>`
     let sortAsc = `
     <a type="button" onclick="sortNameDesc('name')"><i class="fa-solid fa-sort-up"></i></a>
     <span>Name</span>
     `
     document.getElementById(`sort-name`).innerHTML = sortAsc
+    document.getElementById(`sort-phone`).innerHTML = random
     readData()
 }
 
@@ -44,11 +46,13 @@ const sortNameDesc = (name) => {
 const sortPhoneAsc = (phone) => {
     sortBy = phone
     sortMode = 'asc'
+    let random = `<a type="button" onclick="sortPhoneAsc('name')"><i class="fa-solid fa-sort"></i></a> Phone</th>`
     let sortAsc = `
     <a type="button" onclick="sortPhoneDesc('phone')"><i class="fa-solid fa-sort-up"></i></a>
     <span>Phone</span>
     `
     document.getElementById(`sort-phone`).innerHTML = sortAsc
+    document.getElementById(`sort-name`).innerHTML = random
     readData()
 }
 
