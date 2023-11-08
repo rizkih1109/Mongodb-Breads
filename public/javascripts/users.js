@@ -88,12 +88,17 @@ const chooselimit = () => {
 
 const changePage = async (num) => {
     page = num
-    readData()
+    readData(page)
 }
 
 document.getElementById('form-user').addEventListener('submit', (event) => {
     event.preventDefault()
     addData()
+})
+
+document.getElementById('form-user').addEventListener('submit', (event) => {
+    event.preventDefault()
+    editData()
 })
 
 // Main functions
@@ -127,12 +132,12 @@ const readData = async () => {
         pagination += `
         <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${users.total} of ${users.total} entries </span>
         <div class="page">
-        <a class="page-link active" id="button-pagination" ">1</a>
+        <a class="page-link active" id="button-pagination">1</a>
         </div>
         `
     } else {
         pagination += `
-        <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${(users.limit + users.offset) >= users.total ? users.total : (users.limit + users.offset)} of ${users.total} entries </span>
+        <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${(Number(limit) + Number(users.offset)) >= users.total ? Number(users.total) : Number(limit) + Number(users.offset)} of ${users.total} entries </span>
         <div class="page">
         ${users.page == 1 ? '' : '<a onclick="changePage(page - 1)" class="page-link" arial-lable="back"><span arial-hidden = true">&laquo</span></a>'}
         ${pageNumber}

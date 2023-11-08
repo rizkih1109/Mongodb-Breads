@@ -13,7 +13,7 @@ module.exports = function (db) {
       const params = {}
       const sort = {}
       sort[sortBy] = sortMode
-      const offset = (page - 1) * 5
+      const offset = (page - 1) * limit
 
       if (query) {
         params['$or'] = [{ "name": new RegExp(query, 'i') }, { "phone": new RegExp(query, "i") }]
@@ -22,7 +22,7 @@ module.exports = function (db) {
       const total = await User.count(params)
       const pages = Math.ceil(total / limit)
 
-      const users = await User.find(params).sort(sort).limit(parseInt(limit)).skip(offset).toArray();
+      const users = await User.find(params).sort(sort).limit(Number(limit)).skip(Number(offset)).toArray();
       res.json({ data: users, total, pages, page, limit, offset })
 
     } catch (error) {
