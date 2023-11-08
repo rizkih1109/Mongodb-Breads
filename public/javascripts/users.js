@@ -2,7 +2,7 @@
 let id = null, condition = null, page = 1, query = '', limit = 5, sortBy = '_id', sortMode = 'desc';
 
 
-// Support function
+// Support functions
 function getId(_id) {
     id = _id
 }
@@ -17,6 +17,50 @@ addButton.onclick = () => {
     condition = true
     const name = document.getElementById('name').value = ""
     const phone = document.getElementById('phone').value = ""
+}
+
+const sortNameAsc = (name) => {
+    sortBy = name
+    sortMode = 'asc'
+    let sortAsc = `
+    <a type="button" onclick="sortNameDesc('name')"><i class="fa-solid fa-sort-up"></i></a>
+    <span>Name</span>
+    `
+    document.getElementById(`sort-name`).innerHTML = sortAsc
+    readData()
+}
+
+const sortNameDesc = (name) => {
+    sortBy = name
+    sortMode = 'desc'
+    let sortDesc = `
+    <a type="button" onclick="sortNameAsc('name')"><i class="fa-solid fa-sort-down"></i></a>
+    <span>Name</span>
+    `
+    document.getElementById(`sort-name`).innerHTML = sortDesc
+    readData()
+}
+
+const sortPhoneAsc = (phone) => {
+    sortBy = phone
+    sortMode = 'asc'
+    let sortAsc = `
+    <a type="button" onclick="sortPhoneDesc('phone')"><i class="fa-solid fa-sort-up"></i></a>
+    <span>Phone</span>
+    `
+    document.getElementById(`sort-phone`).innerHTML = sortAsc
+    readData()
+}
+
+const sortPhoneDesc = (phone) => {
+    sortBy = phone
+    sortMode = 'desc'
+    let sortDesc = `
+    <a type="button" onclick="sortPhoneAsc('phone')"><i class="fa-solid fa-sort-down"></i></a>
+    <span>Phone</span>
+    `
+    document.getElementById(`sort-phone`).innerHTML = sortDesc
+    readData()
 }
 
 const browse = () => {
@@ -48,11 +92,11 @@ document.getElementById('form-user').addEventListener('submit', (event) => {
     addData()
 })
 
-// Main function
+// Main functions
 const readData = async () => {
     let pagination = ""
     let pageNumber = ""
-    const response = await fetch(`http://localhost:3000/api/users?query=${query}&page=${page}&limit=${limit}`);
+    const response = await fetch(`http://localhost:3000/api/users?query=${query}&page=${page}&limit=${limit}&sortBy=${sortBy}&sortMode=${sortMode}`);
     const users = await response.json();
     let html = ''
     const offset = users.offset
@@ -76,7 +120,12 @@ const readData = async () => {
     }
 
     if (document.getElementById('showData').value == 0) {
-        pagination = ''
+        pagination += `
+        <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${users.total} of ${users.total} entries </span>
+        <div class="page">
+        <a class="page-link active" id="button-pagination" ">1</a>
+        </div>
+        `
     } else {
         pagination += `
         <span class="mx-2 mt-1">Showing ${users.offset + 1} to ${(users.limit + users.offset) >= users.total ? users.total : (users.limit + users.offset)} of ${users.total} entries </span>
