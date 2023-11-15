@@ -7,7 +7,7 @@ module.exports = (db) => {
   })
 
   router.get('/users/:id/todos', (req, res, next) => {
-    res.render('todolist', {executor: req.params.id})
+    res.render('todoslist', {executor: req.params.id})
   })
 
   return router

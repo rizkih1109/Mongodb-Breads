@@ -118,7 +118,7 @@ const readData = async () => {
                 <td>
                     <button class="btn btn-success" type="button" onclick="getoneData('${item._id}')" data-bs-toggle="modal" data-bs-target="#addData"><i class="fa-solid fa-pen"></i></button>
                     <button class="btn btn-danger" onclick="getId('${item._id}')" type="button" data-bs-toggle="modal" data-bs-target="#deleteData"><i class="fa-solid fa-trash"></i></button>
-                    <button class="btn btn-warning" type="button"><i class="fa-solid fa-right-to-bracket"></i></button>
+                    <a href="/users/${item._id}/todos" class="btn btn-warning"><i class="fa-solid fa-right-to-bracket"></i></a>
                 </td>
             </tr>
         `
@@ -203,3 +203,9 @@ const deleteData = async () => {
     const users = await response.json();
     readData()
 }
+
+const pageTodos = async (id) => {
+    const response = await fetch(`http://localhost:3000/users/${id}/todos`)
+    const todos = await response.json()
+}
+
