@@ -1,7 +1,8 @@
-const { name } = require('ejs')
+const { render } = require('ejs')
 var express = require('express');
 const { ObjectId } = require('mongodb')
 var router = express.Router();
+const moment = require('moment')
 
 module.exports = function (db) {
 
@@ -51,7 +52,6 @@ module.exports = function (db) {
             const user = await User.findOne({_id: new ObjectId(executor)})
             const todos = await Todo.insertOne({ title: title, complete: false, deadline: new Date(Date.now() + a_day), executor: user._id })
             const data = await Todo.find({ _id: new ObjectId(todos.insertedId) }).toArray()
-            console.log(todos.deadline)
             res.status(201).json(data)
         } catch (err) {
             console.log(err)
