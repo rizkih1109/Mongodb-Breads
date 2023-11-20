@@ -11,7 +11,7 @@ module.exports = function (db) {
 
     router.get('/', async (req, res, next) => {
         try {
-            const { page = 1, limit = 10, title, startdateDeadline, enddateDeadline, complete, sortMode = 'desc', sortBy, executor } = req.query
+            const { page = 1, limit = 10, title, startdateDeadline, enddateDeadline, complete, sortMode = 'desc', sortBy = '_id', executor } = req.query
             const params = {}
             const sort = {}
             sort[sortBy] = sortMode
@@ -21,13 +21,13 @@ module.exports = function (db) {
 
             if (startdateDeadline && enddateDeadline) {
                 params['deadline'] = {
-                    $gte: startdateDeadline,
-                    $lte: enddateDeadline
+                    $gte: new Date(startdateDeadline),
+                    $lte: new Date (enddateDeadline)
                 }
             } else if (startdateDeadline) {
-                params['deadline'] = { $gte: startdateDeadline }
+                params['deadline'] = { $gte: new Date(startdateDeadline) }
             } else if (enddateDeadline) {
-                params['deadline'] = { $lte: enddateDeadline }
+                params['deadline'] = { $lte: new Date(enddateDeadline) }
             }
 
             if (complete) params['complete'] = JSON.parse(complete)

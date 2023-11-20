@@ -9,7 +9,7 @@ module.exports = function (db) {
 
   router.get('/', async (req, res, next) => {
     try {
-      const { page = 1, limit = 5, query = '', sortMode = 'desc', sortBy } = req.query
+      const { page = 1, limit = 5, query = '', sortMode = 'desc', sortBy = "_id" } = req.query
       const params = {}
       const sort = {}
       sort[sortBy] = sortMode

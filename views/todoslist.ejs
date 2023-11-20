@@ -25,11 +25,11 @@
             <h1>Todo List</h1>
         </div>
         <div>
-            <form action="/users" method="get">
+            <div>
                 <div class="row mb-3 mt-3 px-3">
                     <label for="title" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="title" placeholder="Insert your title" />
+                        <input type="text" class="form-control" id="searchTitle" placeholder="Insert your title" />
                     </div>
                 </div>
                 <div class="row mb-3 px-3">
@@ -37,13 +37,13 @@
                     <div class="col-sm-10">
                         <div class="row g-3">
                             <div class="col">
-                                <input type="datetime-local" class="form-control" name="startdate" />
+                                <input type="datetime-local" class="form-control" id="startdateDeadline" />
                             </div>
                             <div class="col-md-2" style="padding-top: 7px; padding-left: 7%;">
                                 <span>s.d.</span>
                             </div>
                             <div class="col">
-                                <input type="datetime-local" class="form-control" name="enddate" />
+                                <input type="datetime-local" class="form-control" id="enddateDeadline" />
                             </div>
                         </div>
                     </div>
@@ -51,23 +51,23 @@
                 <div class="row mb-3 px-3">
                     <label for="Complete" class="col-sm-2 col-form-label">Complete</label>
                     <div class="col-sm-10">
-                        <select name="complete" class="form-control">
+                        <select id="completeTodo" class="form-control">
                             <option value="">-select complete-</option>
                             <option value="true">Done</option>
                             <option value="false">Not yet</option>
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3 px-3">
-                    <div class="col-sm-2">
+                <div class="row mb-3 px-3" id="changeSort">
+                    <div class="col-sm-2" onclick="sortAsc('deadline')">
                         <button class="btn btn-success"><i class="fa-solid fa-sort"></i> sort by deadline</button>
                     </div>
                     <div class="col-sm-10">
-                        <button class="btn btn-warning"><i class="fa-solid fa-rotate"></i></button>
-                        <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-warning" onclick="resetData()"><i class="fa-solid fa-rotate"></i></button>
+                        <button class="btn btn-info" onclick="browseData()"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="px-3 mb-3 foot2" style="background-color: #f2f2f2;">
             <input type="text" id="title" class="form-control my-2" name="title" placeholder="title" />
