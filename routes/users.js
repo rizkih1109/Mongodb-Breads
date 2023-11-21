@@ -23,7 +23,7 @@ module.exports = function (db) {
       const pages = Math.ceil(total / limit)
 
       const users = await User.find(params).sort(sort).limit(Number(limit)).skip(Number(offset)).toArray();
-      res.json({ data: users, total, pages, page, limit, offset })
+      res.json({ data: users, total, pages, page: Number(page), limit, offset })
 
     } catch (error) {
       res.status(500).json({ error })

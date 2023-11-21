@@ -38,7 +38,7 @@ module.exports = function (db) {
             const pages = Math.ceil(total / limit)
 
             const todos = await Todo.find(params).sort(sort).limit(Number(limit)).skip(Number(offset)).toArray();
-            res.json({ data: todos, total, pages, page, limit })
+            res.json({ data: todos, total, pages, page: Number(page), limit })
 
         } catch (error) {
             res.status(500).json({ error })
