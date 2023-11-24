@@ -72,6 +72,7 @@ const browse = () => {
     const phone = document.getElementById('phone').value
     let inputData = document.getElementById('inputData').value
     query = inputData.toString()
+    page = 1
     readData()
 }
 
@@ -125,7 +126,7 @@ const readData = async () => {
     });
 
     for (let i = 1; i <= users.pages; i++) {
-        pageNumber += `<a class="page-link ${page == i ? ' active': ''}" id="button-pagination" onclick="changePage(${i})">${i}</a>`
+        pageNumber += `<a class="page-link ${page == i ? ' active' : ''}" id="button-pagination" onclick="changePage(${i})">${i}</a>`
     }
 
     if (document.getElementById('showData').value == 0) {
