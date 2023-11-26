@@ -28,7 +28,7 @@ const resetData = () => {
     $('#searchTitle').val('')
     $('#startdateDeadline').val('')
     $('#enddateDeadline').val('')
-    $('#compelteTodo').val('')
+    $('#completeTodo').val('')
 
     sortBy = "_id"
     sortMode = 'desc'
@@ -69,6 +69,7 @@ $(window).scroll(function () {
         readData(coba)
     }
 })
+
 
 // Main functions
 const readData = async (semua) => {
